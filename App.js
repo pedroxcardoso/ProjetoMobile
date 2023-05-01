@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import { SafeAreaView } from 'react-native-web';
 export default function App() {
 
   let [filmes, setFilmes] = useState([]);
@@ -20,30 +21,42 @@ export default function App() {
   return (
 
   <View style={styles.container}>
-    
+   
+   <SafeAreaView style={styles.content}>
     {filmes.length > 0 ? (
       filmes.map((filme) => (
-        <View key={filme._id} style={styles.filmeCont}>
-                    <View style={styles.viewImg}>
-          <Image style={styles.poster} source={{uri: imageURL+filme.attributes.poster.data.attributes.formats.small.url}} ></Image>
-            </View> 
+        <View key={filme._id} style={styles.filmCont}>
+              <View style={styles.imgCont}>
+                
+            <Image style={styles.poster} source={{uri: imageURL+filme.attributes.poster.data.attributes.formats.small.url}} ></Image>
+              </View> 
           <Text style={styles.titulo}>{filme.attributes.titulo}</Text>
           <Text style={styles.subtitulo}>{filme.attributes.subtitulo}</Text>
           <Text style={styles.sinopse}>{filme.attributes.sinopse}</Text>
-
+          <TouchableOpacity style={styles.but}>
+            <Text style={styles.butText}>Horários</Text>
+          </TouchableOpacity>
         </View>
       ))
-      
     ) : (
-      <Text style={styles.loading}>Carregando...</Text>
+      <Text style={styles.loading}>Carregando catálogo...</Text>
     )}
     <StatusBar style="auto" />
+    </SafeAreaView> 
+
   </View>
 );
 
 }
 
 const styles = StyleSheet.create({
+  content: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black'
+   },
+
   container: {
     flex: 1,
     backgroundColor: 'black',
@@ -51,24 +64,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   
-  viewImg: {
+  imgCont: {
     padding: 3,
     margin: '15%',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '70%',
     height: '50%',
   },
 
-  filmeCont: {
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    width: '90%',
-    fontSize: 18,
-    margin: 10,
-    border: 'thick double #699',
+  filmCont: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 500,
+    maxHeight: 720,
+    margin: 15,
+    paddingBottom: 20,
+    borderRadius: 15,
+    backgroundColor: '#4C4E52',
+    border: '1px solid red'
   },
   
   titulo: {
-    marginTop: '8%',
     fontSize: 18,
     color: 'white',
     fontWeight: 'bold',
@@ -78,18 +95,39 @@ const styles = StyleSheet.create({
   
   subtitulo: {
     fontSize: 15,
-    color: 'gray',
+    color: 'black',
     textAlign: 'center'
   },
   
   sinopse: {
     color: 'white',
-    padding: 10
+    padding: 10,
+    maxWidth: 400
   },
 
   poster: {
     borderRadius: '10%',
     width: '100%',
-    height: 500
+    height: 400
+  },
+
+  loading: {
+    fontSize: 15
+  },
+
+  but: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'red',
+    color: 'white'
+  },
+
+  butText: {
+    color: 'white',
+    fontWeight: 'bold'
   }
 });
